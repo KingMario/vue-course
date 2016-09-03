@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue.js 计算属性</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h2>Vue.js 计算属性</h2>
+  <div id="app">
+    <div>
+      正方形边长：{{ a }}m
+    </div>
+    <input type="range" v-model="a">
+    <div>
+      正方形面积：{{ s }}m<sup>2</sup>
+    </div>
+  </div>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      a: 1
+    },
+    computed: {
+      s: function () {
+        return this.a * this.a
+      }
+    }
+  })
+</script>
+</body>
+</html>
