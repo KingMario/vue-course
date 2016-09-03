@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>数据驱动</title>
+  <link rel="stylesheet" href="../css/lesson1-1.css">
+</head>
+<body>
+<div>
+  <span>请选择：</span>
+  <div class="form-select" v-on:mouseover="listStyle.display = 'block'" v-on:mouseout="listStyle.display = 'none'">
+    <span class="form-select-text">{{selected}}</span>
+    <div class="form-select-list" v-bind:style="listStyle">
+      <ul>
+        <li v-for="option in options" v-on:click="selectOption(option)">{{option}}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+  var options = ('选项一,选项二,选项三,选项四,选项五').split(',')
+
+  var vm = new Vue({
+    el: 'body',
+    data: {
+      options: options,
+      selected: options[0],
+      listStyle: {
+        display: 'none'
+      }
+    },
+    methods: {
+      selectOption: function (opt) {
+        this.selected = opt
+        this.listStyle.display = 'none'
+      },
+      log: function (info) {
+        console.log(info)
+      }
+    }
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+.form-select {
+  cursor: pointer;
+  display: inline-block;
+}
+.form-select-text {
+  display: inline-block;
+  width: 100px;
+  padding-left: 5px;
+  border-bottom: 1px dashed black;
+}
+.form-select-text .glyphicon {
+  float: right;
+}
+.form-select-list {
+  background-color: white;
+  position: absolute;
+  border: 1px solid black;
+  width: 100px;
+}
+.form-select-list ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.form-select-list li {
+  padding: 0 0 0 5px;
+}
+.form-select-list li:hover {
+  color: blue;
+  background-color: ghostwhite;
+}
