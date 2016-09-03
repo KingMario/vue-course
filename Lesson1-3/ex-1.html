@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>条件渲染</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h2>条件渲染</h2>
+  <div id="app">
+    <h3>示例一</h3>
+    <div>
+      <img v-if="user.photo" :src="user.photo">
+      <img v-else src="../images/defaultAvatar.png">
+    </div>
+
+    <hr>
+
+    <h3>示例二</h3>
+    <div class="row">
+      <div class="col-md-3">
+        <a href="http://www.jikexueyuan.com/zhiye/course/12.html?type=8" target="_blank">
+          <img src="http://jiuye-res.jikexueyuan.com/zhiye/showcase/attach-6ae2b991-803f-4b63-bda9-89434d70d665.jpg"
+               alt="Vue.js前端框架详解－基础&amp;进阶&amp;实战" class="img-responsive">
+          Vue.js前端框架详解－基础&amp;进阶&amp;实战
+        </a>
+      </div>
+    </div>
+    <template v-if="product.bookmarked">
+      <span class="glyphicon glyphicon-bookmark text-success"></span>
+      <span class="text-info">已收藏{{product.bookmarkedTimes}}次</span>
+    </template>
+  </div>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      user: {
+        photo: 'http://tva1.sinaimg.cn/crop.0.0.400.400.180/6d2828b2jw8f193hei9uij20b40b4mxd.jpg'
+      },
+      product: {
+        bookmarked: true,
+        bookmarkedTimes: 26
+      }
+    }
+  })
+</script>
+</body>
+</html>
