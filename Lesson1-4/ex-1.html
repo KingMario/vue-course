@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>数组元素遍历</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col-md-7">
+      <h2>乘客列表</h2>
+      <div class="row clearfix visible-md-block visible-lg-block">
+        <div class="col-md-2"><strong>姓名</strong></div>
+        <div class="col-md-2"><strong>证件类型</strong></div>
+        <div class="col-md-3"><strong>证件号码</strong></div>
+        <div class="col-md-2"><strong>手机号码</strong></div>
+        <div class="col-md-3"><strong>航班说明</strong></div>
+      </div>
+      <div class="row" v-for="pax in paxes">
+        <div class="col-md-2">
+          <span class="visible-xs-inline visible-sm-inline"><strong>姓名</strong>：</span>
+          {{pax.name}}
+        </div>
+        <div class="col-md-2">
+          <span class="visible-xs-inline visible-sm-inline"><strong>证件类型</strong>：</span>
+          {{pax.idType}}
+        </div>
+        <div class="col-md-3">
+          <span class="visible-xs-inline visible-sm-inline"><strong>证件号码</strong>：</span>
+          {{pax.idNumber}}
+        </div>
+        <div class="col-md-2">
+          <span class="visible-xs-inline visible-sm-inline"><strong>手机号码</strong>：</span>
+          {{pax.mobile}}
+        </div>
+        <div class="col-md-3">
+          <span class="visible-xs-inline visible-sm-inline"><strong>说明</strong>：</span>
+          <i>{{flightSummary}}</i>
+        </div>
+        <div class="visible-xs visible-sm">
+          <hr v-if="$index !== paxes.length - 1">
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <h2>价格信息</h2>
+      <table class="table table-condensed">
+        <tbody>
+        <template v-for="cost of costs">
+          <tr class="info">
+            <th class="text-success">{{$index + 1}}.{{cost.type}}</th>
+            <td class="text-muted">{{cost.description}}</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td class="text-right">{{cost.price | currency '￥'}} &times; {{cost.count}}</td>
+          </tr>
+        </template>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+  new Vue({
+    el: 'body',
+    data: {
+      flightSummary: 'non-stop flight',
+      paxes: [
+        {
+          name: '张萌萌',
+          idType: '身份证',
+          idNumber: '310104198508101022',
+          mobile: '18988886666'
+        }, {
+          name: '马小虎',
+          idType: '护照',
+          idNumber: 'G87654321'
+        }, {
+          name: '李国强',
+          idType: '军人证',
+          idNumber: '1112223334',
+          mobile: '13789012345'
+        }
+      ],
+      costs: [
+        {
+          type: '成人票',
+          description: '含民航发展基金和燃油税',
+          price: 750,
+          count: 2
+        }, {
+          type: '儿童票',
+          description: '含民航发展基金和燃油税',
+          price: 930,
+          count: 1
+        }, {
+          type: '航意险（成人）',
+          description: '最高300万元意外保障，仅限成人购买',
+          price: 30,
+          count: 2
+        }
+      ]
+    }
+  })
+</script>
+</body>
+</html>
