@@ -1,0 +1,36 @@
+[data-pseudo-content]::before {
+  content: attr(data-pseudo-content);
+}
+.switch {
+  display: inline-block;
+  width: 90px;
+  font-size: 0;
+  border-radius: 2px;
+  border: 1px solid #0082ff;
+  height: 20px;
+}
+.switch span {
+  display: inline-block;
+  width: 44px;
+  line-height: 18px;
+  font-size: 12px;
+  vertical-align: middle;
+  text-align: center;
+  cursor: pointer;
+}
+.switch .switch-item-1 {
+  background-color: #0082ff;
+  color: #fff;
+}
+.switch .switch-item-2 {
+  background-color: #fff;
+  color: #a8b1c0;
+}
+.switch.switched .switch-item-1 {
+  background-color: #fff;
+  color: #a8b1c0;
+}
+.switch.switched .switch-item-2 {
+  background-color: #0082ff;
+  color: #fff;
+}

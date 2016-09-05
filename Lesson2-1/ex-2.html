@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>类与样式绑定</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/lesson2-1.css">
+</head>
+<body>
+<div class="container">
+  <h1>类绑定对象语法</h1>
+  <div class="row">
+    <span class="switch" :class="{switched: gender}" @click="gender = Math.abs(~-gender)">
+      <span class="switch-item-1" data-pseudo-content="男"></span>
+      <span class="switch-item-2" data-pseudo-content="女"></span>
+    </span>
+  </div>
+  <div class="row">
+    <span class="switch" :class="{switched: off}" @click="off = !off">
+      <span class="switch-item-1" data-pseudo-content="开"></span>
+      <span class="switch-item-2" data-pseudo-content="关"></span>
+    </span>
+  </div>
+  <div class="row">
+    <span class="switch" :class="{switched: nameType === 'Eng'}" @click="nameType = nameType === 'Eng' ? 'Chs' : 'Eng'">
+      <span class="switch-item-1" data-pseudo-content="中文名"></span>
+      <span class="switch-item-2" data-pseudo-content="英文名"></span>
+    </span>
+  </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+  var vm = new Vue({
+    el: 'body',
+    data: {
+      gender: 0,
+      off: true,
+      nameType: 'Eng'
+    }
+  })
+</script>
+</body>
+</html>

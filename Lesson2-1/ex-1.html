@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>类与样式绑定</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h1>类与样式绑定</h1>
+  <div class="row">
+    <div class="col-xs-1">
+      <img class="{{myImgClass}}"
+           src="http://tva1.sinaimg.cn/crop.0.0.400.400.180/6d2828b2jw8f193hei9uij20b40b4mxd.jpg">
+    </div>
+    <div class="col-xs-2">
+      <form class="form-inline">
+        <fieldset>
+          <legend>图片形状</legend>
+          <div class="form-group">
+            <label>
+              <input type="radio" v-model="imgShapeClass" value="img-rounded"> 矩形
+            </label>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="radio" v-model="imgShapeClass" value="img-circle"> 圆
+            </label>
+          </div>
+        </fieldset>
+      </form>
+      <div class="row">
+        <img class="img-responsive" v-bind:class="imgShapeClass"
+             src="http://tva1.sinaimg.cn/crop.0.0.400.400.180/6d2828b2jw8f193hei9uij20b40b4mxd.jpg"
+             :style="myImgStyles">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+  var vm = new Vue({
+    el: 'body',
+    data: {
+      myImgClass: 'img-responsive',
+      imgShapeClass: 'img-circle',
+      myImgStyles: 'border: 1px solid black; padding: 2px;'
+    }
+  })
+</script>
+</body>
+</html>
