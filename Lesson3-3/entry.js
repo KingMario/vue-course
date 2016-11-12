@@ -1,1 +1,1 @@
-document.write('webpack 就是棒！')
+document.write(require('./content.js'))
