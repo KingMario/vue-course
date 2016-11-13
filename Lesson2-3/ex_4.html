@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>事件绑定与处理  </title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+<div>
+  <div class="container">
+    <h2>事件修饰符</h2>
+    <div class="row">
+      <div class="col-md-12">
+        {{ msg }}
+      </div>
+      <form class="form">
+        <input class="form-control" type="submit" v-on:click.prevent="submitForm" value="Submit">
+      </form>
+    </div>
+
+    <div class="row" @click="doSomething">
+      <div class="col-md-12">
+        <h3>Click Me - It’ll trigger the click event for the <i>.row</i> block</h3>
+        Me too.
+      </div>
+      <div class="col-md-4" v-for="element in array"
+        @click.stop="doSomethingIndividually">
+        {{ $index }} - {{ element }}
+      </div>
+    </div>
+    <hr>
+
+    <div class="row" @click.capture="doSomething">
+      <div class="col-md-12">
+        <h3>Capture Modifier</h3>
+      </div>
+      <div class="col-md-4" v-for="element in array"
+        @click.stop="doSomethingIndividually">
+        {{ $index }} - {{ element }}
+      </div>
+    </div>
+    <hr>
+
+    <div class="row">
+      <h3 @click.self="doSomething">
+        Click EXACTLY Me,
+        <b>But NOT Me,</b>
+        <i>Nor Me</i>
+      </h3>
+    </div>
+  </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+  var vm = new Vue({
+    el: 'body',
+    data: {
+      msg: '',
+      array: ['Coffee table', 'Console', 'Couch', 'Dressing table', 'Chair', 'Armchair', 'Baby crib', 'Fireplace']
+    },
+    methods: {
+      submitForm: function () {
+        this.msg = 'sending request ...'
+      },
+      doSomething: function () {
+        alert('Something is done.')
+      },
+      doSomethingIndividually: function () {
+        alert('Something individual is done.')
+      }
+    }
+  })
+</script>
+</body>
+</html>

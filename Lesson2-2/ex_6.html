@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>表单控件绑定</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h2>参数特性</h2>
+  <!-- lazy & debounce attributes for text type only -->
+  <div class="row">
+    <div class="col-md-3 bg-info">
+      msg: 
+      <span class="text-success">
+        {{ msg }}
+      </span>
+    </div>
+    <div class="col-md-3">
+      normal: <input type="text" v-model="msg">
+    </div>
+    <div class="col-md-3">
+      lazy: <input type="text" v-model="msg" lazy>
+    </div>
+    <div class="col-md-3">
+      debounce: <input type="text" v-model="msg" debounce="500">
+    </div>
+  </div>
+  <hr>
+  <!-- number attribute for text, radio, select types & checkbox type (wrong way) -->
+  <div class="row">
+    <div class="col-md-3 bg-info">
+      age: 
+      <span class="text-success">
+        {{ age | JSON }}
+      </span>
+    </div>
+    <div class="col-md-3">
+      range: <input type="range" v-model="age" min="2" max="18" step="2">
+    </div>
+    <div class="col-md-3">
+      Type="number": <input type="number" v-model="age">
+    </div>
+    <div class="col-md-3">
+      number: <input type="text" v-model="age" number>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 bg-info">
+      typeof age: 
+      <span class="text-success">
+        {{ typeof age }}
+      </span>
+    </div>
+    <div class="col-md-3">
+      <label>
+        <input type="radio" v-model="age" value="14" number> 14 years old
+      </label>
+      <label>
+        <input type="radio" v-model="age" value="8" number> 8 years old
+      </label>
+    </div>
+    <div class="col-md-3">
+      <select v-model="age" number>
+        <option>2</option>
+        <option>4</option>
+        <option>6</option>
+        <option>8</option>
+        <option>10</option>
+        <option>12</option>
+        <option>14</option>
+        <option>16</option>
+        <option>18</option>
+      </select>
+    </div>
+    <div class="col-md-3 text-danger bg-danger">
+      <label>
+        <input type="checkbox" v-model="age" value="6" number> 6 years old
+      </label>      
+    </div>
+  </div>
+  <hr>
+  <!-- number attribute for checkbox type, correctly -->
+  <div class="row">
+    <div class="col-md-3 bg-info">
+      voted: {{ voted | json }}
+    </div>
+    <div class="col-md-9">
+      MVP vote (up to 2 players)
+      <label>
+        <input type="checkbox" v-model="voted" :disabled="voted.length * voted.indexOf(0) === -2" value="0" number> Player 0
+      </label>
+      <label>
+        <input type="checkbox" v-model="voted" :disabled="voted.length * voted.indexOf(1) === -2" value="1" number> Player 1
+      </label>
+      <label>
+        <input type="checkbox" v-model="voted" :disabled="voted.length * voted.indexOf(2) === -2" value="2" number> Player 2
+      </label>
+      <label>
+        <input type="checkbox" v-model="voted" :disabled="voted.length * voted.indexOf(3) === -2" value="3" number> Player 3
+      </label>
+    </div>
+  </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+var vm = new Vue({
+  el: 'body',
+  data: {
+    msg: 'Vue.js',
+    age: '12',
+    voted: []
+  },
+  watch: {
+    msg: function (val) {
+      console.log(val)
+    }
+  },
+  filters: {
+    JSON: function (val) {
+      return JSON.stringify(val)
+    }
+  }
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>表单控件绑定</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h2>Radio 数据双向绑定</h2>
+  <div class="row">
+    <label class="col-md-12">
+      <input type="radio" name="radio1" value="One" v-model="picked"> One
+    </label>
+    <label class="col-md-12">
+      <input type="radio" name="radio1" value="Two" v-model="picked"> Two
+    </label>
+    <label class="col-md-12">
+      <input type="radio" name="radio2" value="three" v-model="picked"> three
+    </label>
+    <label class="col-md-12">
+      <input type="radio" name="radio2" value="four" v-model="picked"> four
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      Picked: {{ picked }}
+    </div>
+  </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+var vm = new Vue({
+  el: 'body',
+  data: {
+    picked: ''
+  }
+})
+</script>
+</body>
+</html>

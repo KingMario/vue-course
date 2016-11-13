@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Watcher 的使用</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/vue-animate.min.css">
+</head>
+<body>
+<div class="container">
+<h2>深度观察</h2>
+<div class="row">
+  <div class="col-md-12">
+    姓：
+    <input type="text" v-model="user.lastName">
+  </div>
+  <div class="col-md-12">
+    名：
+    <input type="text" v-model="user.firstName">
+  </div>
+  <div class="col-md-12">
+    {{ user.fullName }} 的粉丝：
+  </div>
+  <div class="col-md-4" v-for="fellow in fellows">
+    <label>
+      <input type="checkbox" v-model="followers" :value="fellow"> {{fellow}}
+    </label>
+  </div>
+  <div class="col-md-12" v-show="liKuiRemoved" transition="bounce">
+    <div class="text-danger">
+      公明哥哥，你不要俺铁牛了？
+    </div>
+  </div>
+</div>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+var fellows = [
+'武松',
+'鲁智深',
+'李逵',
+'林冲',
+'吴用',
+'杨志',
+'史进',
+'张青'
+]
+
+var vm = new Vue({
+el: 'body',
+data: {
+  user: {
+    lastName: '宋',
+    firstName: '江',
+    fullName: ''
+  },
+  fellows,
+  followers: [].concat(fellows),
+  liKuiRemoved: false
+},
+watch: {
+  user: {
+    handler: function(val, oldVal) {
+      this.user.fullName = val.lastName + val.firstName
+    },
+    deep: true,
+    immediate: true
+  },
+  followers: function(val, oldVal) {
+    this.liKuiRemoved = val.indexOf(fellows[2]) === -1
+  }
+}
+})
+</script>
+</body>
+</html>

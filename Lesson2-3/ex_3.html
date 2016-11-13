@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>事件绑定与处理  </title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+<div>
+  <div class="container">
+    <h2>访问原生DOM事件属性</h2>
+    <div class="row">
+      <div class="col-md-12">
+        {{ msg }}
+      </div>
+      <form class="form" method="post">
+        <input type="text" class="form-control">
+        <button class="form-control" type="submit" v-on:click="submitForm({hiddenInfo: 99}, $event)">
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+  var vm = new Vue({
+    el: 'body',
+    data: {
+      msg: ''
+    },
+    methods: {
+      submitForm: function (data, event) {
+        event.preventDefault()
+        this.msg = 'sending request ...'
+      }
+    }
+  })
+</script>
+</body>
+</html>

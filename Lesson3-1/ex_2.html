@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>组件</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container-fluid">
+  <hr>
+  <div class="col-xs-6 container-fluid" id="app1">
+    <h2>HTML限制条件及注意事项</h2>
+    <div>
+      Select 控件：
+      <my-select>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </my-select>
+    </div>
+    <div>
+      Select 控件：
+      <select>
+        <my-option value="1" text="One"></my-option>
+        <my-option value="2" text="Two" selected></my-option>
+        <my-option value="3" text="Three"></my-option>
+      </select>
+    </div>
+    <hr>
+    <table>
+      <tr>
+        <my-component prop-a="My component in a table"></my-component>
+      </tr>
+    </table>
+    <hr>
+    <table>
+      <tbody>
+        <tr>
+          <td is="my-component"></td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table">
+      <thead>
+        <tr>
+          <td>i</td>
+          <td>i + 1</td>
+        </tr>
+        <tr class="bg-info">
+          <td>
+            &nbsp;
+          </td>
+          <td>
+            &nbsp;
+          </td>
+        </tr>
+      </thead>
+      <template v-for="item in 4">
+        <tr>
+          <td>{{item}}</td>
+          <td>{{item + 1}}</td>
+        </tr>
+        <tr class="bg-info">
+          <td is="seperator"></td>
+        </tr>
+      </template>
+    </table>
+  </div>
+
+  <div class="col-xs-6 container-fluid" id="app2">
+    <h2>自定义标签条件渲染</h2>
+    <div class="row">
+      <my-component prop-a="This is my component" v-show="showMyComponent"></my-component>
+      <your-component prop-a="This is your component" v-else></your-component>
+    </div>
+  </div>
+
+  <div class="col-xs-6 container-fluid" id="app3">
+    <h2>跟媒体相关的注意事项</h2>
+    <div class="row">
+      <h3>使用 v-cloak 指令</h3>
+      <button @click="showIt = !showIt">切换图片</button>
+      <div>
+        <img class="img-responsive" :src="'http://s4.cn.bing.net/th?id=OJ.ChNbCnxdVjwb5Q&pid=MSNJVFeeds'" v-if="showIt"/>
+      </div>
+        <h3>视频自动播放</h3>
+      <div>
+        <button @click="playIt = !playIt">切换视频</button>
+      </div>
+      <video style="width: 100%;" autoplay loop controls src="http://www.waylens.com/videos/Waylens_Horizon_Product_Video_360p.m4v" v-if="playIt" v-cloak></video>
+    </div>
+  </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+var mySelect = Vue.extend({
+  template: '<select><slot></slot></select>'
+})
+
+var myOption = Vue.extend({
+  props: ['value', 'text'],
+  template: '<option :value="value">{{text}}</option>'
+})
+
+var myComponent = Vue.extend({
+  data: function() {
+    return {
+      msg: 'Hello, Vue.js.',
+    }
+  },
+  props: ['propA'],
+  template: '<div><h3 style="text-transform: uppercase">{{propA}}</h3><div>{{msg}}</div><img :src="\'http://s4.cn.bing.net/th?id=OJ.ChNbCnxdVjwb5Q&pid=MSNJVFeeds\'" v-if="false"/></div>'
+})
+
+var seperator = Vue.extend({
+  template: '<td>&nbsp;</td><td>&nbsp;</td>'
+})
+
+var vm1 = new Vue({
+  el: '#app1',
+  components: {
+    mySelect: mySelect,
+    myOption: myOption,
+    myComponent: myComponent,
+    seperator: seperator
+  }
+})
+
+var vm2 = new Vue({
+  el: '#app2',
+  data: {
+    newMsg: 'abcd',
+    showMyComponent: true
+  },
+  components: {
+    myComponent: myComponent,
+    yourComponent: myComponent
+  }
+})
+
+var vm3 = new Vue({
+  el: '#app3',
+  data: {
+    showIt: false,
+    playIt: false
+  }
+})
+
+</script>
+</body>
+
+</html>

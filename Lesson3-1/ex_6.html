@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>组件</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/vue-animate.min.css">
+  <link rel="stylesheet" href="../css/lesson3-1.css">
+</head>
+
+<body>
+  <div class="container" id="app">
+    <h2>动态组件</h2>
+    <div class="row">
+      <div>
+        <a href="javascript:void(0);" @click="currentView = 'home'">
+          Home
+        </a>
+        <a href="javascript:void(0);" @click="currentView = 'products'">
+          Products
+        </a>
+      </div>
+      <component keep-alive class="main" :is="currentView" name="visitor" date="2014-03" category="Web Front End" :transition="transition" :transition-mode="transitionMode"></component>
+      <div class="row">
+        过渡动画效果：
+        <select v-model="transition">
+          <option selected="">fade</option>
+          <option>bounce</option>
+          <option>rotate</option>
+          <option>slideDown</option>
+          <option>zoom</option>
+        </select>
+      </div>
+      <div class="row">
+        过渡模式：
+        <label>
+          <input type="radio" v-model="transitionMode" value="in-out"> in-out
+        </label>
+        <label>
+          <input type="radio" v-model="transitionMode" value="out-in"> out-in
+        </label>
+      </div>
+    </div>
+  </div>
+  </div>
+  <template id="home-template">
+    <div>
+      <h3>Home</h3>
+      <div>
+        Welcom to www.jikexueyuan.com, <i>{{name}}</i>.
+      </div>
+      <div class="info">
+        Proudly training since {{date}}.
+      </div>
+    </div>
+  </template>
+  <template id="products-template">
+    <div>
+      <h3>Products</h3>
+      <div>
+        Explore the courses of <i>{{category}}</i> and other categories.
+      </div>
+    </div>
+  </template>
+  <script src="../js/vue.js"></script>
+  <script>
+  Vue.component('home', {
+    props: ['name', 'date'],
+    template: '#home-template'
+  })
+
+  Vue.component('products', {
+    props: ['category'],
+    template: '#products-template',
+    activate: [
+      function(done) {
+        setTimeout(done, 500) // 一般用于加载数据，避免数据还没有准备好就显示，导致页面闪烁或异常
+      },
+      function(done) {
+        setTimeout(done, 2500) // 这里只是简单设置为超时调用 done
+      }
+    ]
+  })
+
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      currentView: 'home',
+      transition: 'fade',
+      transitionMode: 'in-out'
+    }
+  })
+  </script>
+</body>
+
+</html>

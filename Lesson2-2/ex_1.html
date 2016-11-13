@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>表单控件绑定</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h2>Text 数据双向绑定</h2>
+  <div class="row">
+    <div class="col-md-6">
+      姓名：<input v-model="user.name">
+    </div>
+    <div class="col-md-2">
+      {{user.name}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      年龄：<input type="range" :title="user.age" v-model="user.age">
+    </div>
+    <div class="col-md-2">
+      {{user.age}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      File：<input type="file" v-model="user.file">
+    </div>
+    <div class="col-md-2">
+      {{user.file}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      出生年月：<input type="month" v-model="user.birthday">
+    </div>
+    <div class="col-md-2">
+      {{user.birthday}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      喜欢的颜色：<input type="color" v-model="user.color">
+    </div>
+    <div class="col-md-2">
+      {{user.color}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      简介：<textarea v-model="user.profile" style="width:100%;" rows="6"></textarea>
+    </div>
+    <div class="col-md-6">
+      {{user.profile}}
+    </div>
+  </div>
+  <div class="row">
+    <input type="submit" v-model="okStr"><input type="button" v-model="cancelStr">
+  </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+var vm = new Vue({
+  el: 'body',
+  data: {
+    user: {
+      name: 'Bill Gates',
+      age: 61,
+      birthday: '1955-10',
+      file: '',
+      color: '#e8c3fc',
+      profile: '技术专家、商业领袖与慈善家，比尔及梅琳达·盖茨基金会联席主席。',
+    },
+    okStr: '确定',
+    cancelStr: '取消'
+  }
+})
+</script>
+</body>
+</html>

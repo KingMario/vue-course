@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>组件实战 - 添加计算属性</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/lesson3-2.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <h2>单程直达机票航班信息展示</h2>
+      <div class="col-md-7"></div>
+      <div class="col-md-5">
+        <direct-flight :flight-code="flightCode"
+                       :shared-flight-code="sharedFlightCode"
+                       :aircraft="aircraft"
+                       :depart-info="departInfo"
+                       :arrive-info="arriveInfo"
+                       :subclass="subclass"
+                       :supplier="supplier"></direct-flight>
+      </div>
+    </div>
+  </div>
+  <template id="flight-code-title-template">
+    <img :src="'../images/flight-companies/' + flightCompanyCode + '.png'" class="flight-image">{{ flightCompanyName }} {{ flightCode }}
+  </template>
+  <template id="direct-flight-template">
+    <div class="text-center flight-info">
+      <div class="supplier" @mouseover="showSupplier=true" @mouseout="showSupplier=false" v-if="supplier">
+        <span class="glyphicon glyphicon-certificate glyphicon-supplier"></span>
+        <span class="supplier-text"></span>
+        <div class="hover-box" v-show="showSupplier">
+          <strong>产品供应商：</strong>
+          <br> {{ supplier.name }}
+          <br> {{ supplier.code }}
+        </div>
+      </div>
+      <h3>
+        {{ departDate }} {{ departInfo.city }} <span class="glyphicon glyphicon-arrow-right"></span> {{ arriveInfo.city }}
+      </h3>
+      <div class="flight-title flight-title-single" v-if="!sharedFlightCode">
+        <flight-code-title :flight-code="flightCode"></flight-code-title>
+        {{ aircraft }} {{ subclasses[subclass] }}
+      </div>
+      <div class="flight-title-group" v-else>
+        <div class="flight-title">
+          <flight-code-title :flight-code="flightCode"></flight-code-title>
+          {{ aircraft }} {{ subclasses[subclass] }}
+        </div>
+        <div class="flight-title shared-flight-title">
+          实际乘坐 <flight-code-title :flight-code="sharedFlightCode"></flight-code-title>
+        </div>
+      </div>
+      <div class="row flight-detail">
+        <div class="col-xs-4 text-right flight-depart">
+          <div class="flight-time">{{ departTime }}</div>
+          <div class="flight-airport">{{ departInfo.airport }}{{ departInfo.terminal }}</div>
+        </div>
+        <div class="col-xs-4 flight-arrow">
+          <div class="cost-time">
+            <span class="glyphicon glyphicon-time"></span> {{ costTime }}
+          </div>
+          <div class="timeline">
+            <span class="glyphicon glyphicon-plane"></span>
+          </div>
+        </div>
+        <div class="col-xs-4 text-left flight-arrive">
+          <div class="flight-time" v-if="!overMidNight">{{ arriveTime }}</div>
+          <div class="flight-time-with-overmidnight" v-else>
+            <div class="flight-time">{{ arriveTime }}</div>
+            <div class="flight-time-overmidnight" @mouseover="showOverMidNightDetail=true" @mouseout="showOverMidNightDetail=false">
+              <small class="overmidnight-text abbr"></small>
+              <div class="hover-box" v-show="showOverMidNightDetail">
+                到达时间为第2天，{{ arriveDateTimeStr }}
+              </div>
+            </div>
+          </div>
+          <div class="flight-airport">{{ arriveInfo.airport }}{{ arriveInfo.terminal }}</div>
+        </div>
+      </div>
+    </div>
+  </template>
+  <script src="../js/vue.js"></script>
+  <script>
+  function isValidDate(dateString) {
+    var d = new Date(dateString)
+    return !isNaN(d.valueOf())
+  }
+
+  var flightCompanies = {
+    '3u': '四川航空',
+    '9c': '春秋航空',
+    'bk': '奥凯航空',
+    'ca': '中国国航',
+    'cz': '南方航空',
+    'fm': '上海航空',
+    'ho': '吉祥航空',
+    'hu': '海南航空',
+    'mu': '东方航空',
+    'zh': '深圳航空'
+  }
+  var subclasses = {
+    Y: '经济舱',
+    C: '商务舱',
+    F: '头等舱'
+  }
+
+  var weekdays = '周日,周一,周二,周三,周四,周五,周六'.split(',')
+
+  function addLeadingZero(val) {
+    return (100 + val).toString().substr(1)
+  }
+
+  function getTime(dateTime) {
+    return addLeadingZero(dateTime.getHours()) + ':' + addLeadingZero(dateTime.getMinutes())
+  }
+
+  var flightCodeTitle = Vue.extend({
+    template: '#flight-code-title-template',
+    props: {
+      flightCode: {
+        required: true,
+        type: String,
+        validator: function(val) {
+          return /^[0-9A-Z]{2}\d+$/.test(val)
+        },
+        coerce: function(val) {
+          return val.toUpperCase()
+        }
+      }
+    },
+    computed: {
+      flightCompanyCode: function() {
+        return this.flightCode.substr(0, 2).toLowerCase()
+      },
+      flightCompanyName: function() {
+        return flightCompanies[this.flightCompanyCode]
+      }
+    }
+  })
+
+  var directFlight = Vue.extend({
+    template: '#direct-flight-template',
+    data: function() {
+      return {
+        subclasses: subclasses,
+        showSupplier: false,
+        showOverMidNightDetail: false
+      }
+    },
+    props: {
+      flightCode: {
+        required: true,
+        type: String,
+        validator: function(val) {
+          return /^[0-9A-Z]{2}\d+$/.test(val)
+        },
+        coerce: function(val) {
+          return val.toUpperCase()
+        }
+      },
+      sharedFlightCode: {
+        required: false,
+        type: String,
+        validator: function(val) {
+          return /^[0-9A-Z]{2}\d+$/.test(val)
+        },
+        coerce: function(val) {
+          return val && val.toUpperCase()
+        }
+      },
+      aircraft: String,
+      departInfo: {
+        required: true,
+        type: Object,
+        validator: function (val) {
+          return isValidDate(val.time)
+        }
+      },
+      arriveInfo: {
+        required: true,
+        type: Object,
+        validator: function (val) {
+          return isValidDate(val.time)
+        }
+      },
+      subclass: {
+        requred: true,
+        type: String,
+        validator: function (val) {
+          return ['Y', 'C', 'F'].indexOf(val) > -1
+        }
+      },
+      supplier: Object
+    },
+    computed: {
+      departDateTime: function() {
+        return new Date(this.departInfo.time)
+      },
+      departDate: function() {
+        return this.departDateTime.getMonth() + 1 + '-' + this.departDateTime.getDate() + ' ' + weekdays[this.departDateTime.getDay()]
+      },
+      departTime: function() {
+        return getTime(this.departDateTime)
+      },
+      arriveDateTime: function() {
+        return new Date(this.arriveInfo.time)
+      },
+      arriveTime: function() {
+        return getTime(this.arriveDateTime)
+      },
+      costTime: function() {
+        var costTime = (this.arriveDateTime - this.departDateTime) / 1000
+        var minutes = costTime / 60
+        var hours = Math.floor(minutes/60)
+        var minutes = minutes % 60
+        return hours + 'h' + addLeadingZero(minutes) + 'm'
+      },
+      overMidNight: function() {
+        return this.departDateTime.getDate() !== this.arriveDateTime.getDate()
+      },
+      arriveDateTimeStr: function () {
+        var dateTime = this.arriveDateTime
+        return dateTime.getFullYear() + '年' + (dateTime.getMonth() + 1) + '月' + dateTime.getDate() + '日 ' + this.arriveTime.replace(':', '时') + '分'
+      }
+    },
+    components: {
+      flightCodeTitle: flightCodeTitle
+    }
+  })
+
+  var vm = new Vue({
+    el: 'body',
+    data: {
+      flightCode: 'MU9345',
+      sharedFlightCode: 'FM9345',
+      aircraft: '波音737-800',
+      departInfo: {
+        city: '上海',
+        airport: '浦东国际机场',
+        terminal: 'T2',
+        time: '2016-10-13 22:30'
+      },
+      arriveInfo: {
+        city: '武汉',
+        airport: '天河国际机场',
+        terminal: 'T2',
+        time: '2016-10-14 00:35'
+      },
+      subclass: 'Y',
+      supplier: {
+        name: '上海华程西南旅行社有限公司',
+        code: '08309722'
+      }
+    },
+    components: {
+      directFlight: directFlight
+    }
+  })
+  </script>
+</body>
+
+</html>

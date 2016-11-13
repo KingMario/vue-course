@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>表单控件绑定</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h2>Checkbox 数据双向绑定</h2>
+  <div class="row">
+    <label class="col-md-12">
+      <input type="checkbox" v-model="checked">
+      {{ checked }}
+    </label>
+  </div>
+  <hr>
+  <div class="row">
+    <label class="col-md-12">
+      <input type="checkbox" value="Jack" v-model="checkedNames">
+      Jack
+    </label>
+    <label class="col-md-12">
+      <input type="checkbox" value="John" v-model="checkedNames">
+      John
+    </label>
+    <label class="col-md-12">
+      <input type="checkbox" value="Mike" v-model="checkedNames">
+      Mike
+    </label class="col-md-12">
+    <div class="col-md-12">
+      Checked names: {{ checkedNames | json }}
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <label class="col-md-12">
+      <input type="checkbox" id="checkbox" v-model="checkedNoValue">
+      Value Missed
+    </label>
+    <label class="col-md-12">
+      <input type="checkbox" id="checkbox" v-model="checkedNoValue">
+      Value Missed
+    </label>
+    <div class="col-md-12">
+      Checked (no values): {{ checkedNoValue | json }}
+    </div>
+  </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+var vm = new Vue({
+  el: 'body',
+  data: {
+    checked: false,
+    checkedNames: [],
+    checkedNoValue: []
+  }
+})
+</script>
+</body>
+</html>

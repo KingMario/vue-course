@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>组件</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <div id="app1">
+      <h1>Vue 扩展实例</h1>
+      <div class="row">
+        <div class="col-xs-3 text-right">
+          扩展选项中的信息：
+        </div>
+        <div class="col-xs-3">
+          {{ msg }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3 text-right">
+          实例选项中的信息：
+        </div>
+        <div class="col-xs-3">
+          {{ newMsg }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3 text-right">
+          实例选项覆盖扩展选项内容：
+        </div>
+        <div class="col-xs-3">
+          {{ i }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3 text-right">
+          实例选项与扩展选项内容合并：
+        </div>
+        <div class="col-xs-3">
+          {{ obj | json }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3 text-right">
+          <button @click="add">add</button>
+        </div>
+        <div class="col-xs-3">
+          <button @click="add2">add2</button>
+        </div>
+      </div>
+      <h3>插入局部注册的组件</h3>
+      <div class="row">
+        <div class="col-xs-12 text-center bg-info">
+          <your-vue></your-vue>
+        </div>
+        <div class="col-xs-12 text-center bg-warning">
+          <y-o-u-r-v-u-e></y-o-u-r-v-u-e>
+          <hr>
+          <local-component></local-component>
+        </div>
+        <h3>插入全局注册的组件</h3>
+        <div class="row">
+          <div class="col-xs-12 text-center bg-warning">
+            <global-component></global-component>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" id="app2">
+      <h1>父子组件数据关系</h1>
+      <div>
+        父组件中的 msg 数据：{{msg}}
+      </div>
+      <div>
+        <input v-model="msg">
+      </div>
+      <global-component></global-component>
+    </div>
+    <template id="global-template">
+      <div>
+        组件内部 msg 文本内容为 {{msg}}，和父组件无关！不信改改看：
+        <input v-model="msg">
+      </div>
+    </template>
+    <script src="../js/vue.js"></script>
+    <script>
+    Vue.component('global-component', {
+      data: function () {
+        return {
+          msg: 'Hi, Vue.js'
+        }
+      },
+      template: '#global-template'
+    })
+
+    var localComponent = Vue.extend({
+      data: function() {
+        return {
+          msg: '这是组件内部信息',
+          i: 1
+        }
+      },
+      methods: {
+        add: function() {
+          this.i++
+        }
+      },
+      template: '<div>{{ msg }}</div><div>{{ i }}</div><button @click="add">组件内部数据操作</button>'
+    })
+
+    var myVue = Vue.extend({
+      data: function() {
+        return {
+          msg: 'Hello, Vue.js!',
+          i: 1,
+          obj: {
+            a: 1,
+            b: 2
+          }
+        }
+      },
+      methods: {
+        add: function() {
+          this.i++
+        }
+      },
+      components: {
+        YOURVUE: localComponent,
+        'local-component': localComponent
+      }
+    })
+
+    var vm1 = new myVue({
+      data: {
+        newMsg: 'Amazing Vue.js',
+        i: 100,
+        obj: {
+          b: 99,
+          c: 3,
+          d: 4
+        }
+      },
+      methods: {
+        add: function() {
+          this.i += 0.5
+        },
+        add2: function() {
+          this.i += 2
+        }
+      },
+      components: {
+        yourVue: localComponent
+      }
+    })
+
+    vm1.$mount('#app1')
+
+    var vm2 = new myVue({
+      el: '#app2'
+    })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>组件</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container" id="app">
+    <h2>父子组件通信</h2>
+    <div class="row">
+      <h3>Parent</h3>
+      <div>
+        <input v-model="msg">
+        <button class="btn btn-primary" v-on:click="broadcast" :disabled="!msg">Broadcast Event</button>
+        <p v-show="msgToTheChild">Message sent to the child: {{msgToTheChild}}</p>
+        <child v-on:child-msg="handleChildMsg"></child>
+      </div>
+    </div>
+  </div>
+  <template id="child-template">
+    <div>
+      <h3>Child</h3>
+      <div>
+        Message received: {{msg}}
+      </div>
+      <div>
+        <label>
+          <input type="checkbox" v-model="propgation">
+          继续传递
+        </label>
+      </div>
+      <div>
+        <button class="btn btn-success" @click="emit">Emit Event to Myself</button>
+      </div>
+      <div class="row">
+        <grandchild class="col-md-4" v-for="i in 3" v-ref:grandchild-ref :i="i"></grandchild>
+      </div>
+      <grandchild v-ref:grandchild-single-ref></grandchild>
+    </div>
+  </template>
+  <template id="grandchild-template">
+    <div>
+      <h3>Grandchild</h3>
+      <div>
+        Message received from parent: {{parentMsg}}
+      </div>
+      <input :value="msg" readonly>
+      <div>
+        <button class="btn btn-primary" v-on:click="dispatch" :disabled="!msg">Dispatch Event</button>
+        <button class="btn btn-primary" v-on:click="emit" :disabled="!msg">Emit Event</button>
+      </div>
+    </div>
+  </template>
+  <script src="../js/vue.js"></script>
+  <script>
+  Vue.component('grandchild', {
+    data: function() {
+      return {
+        parentMsg: ''
+      }
+    },
+    computed: {
+      msg: function() {
+        return this.i !== undefined ? 'hello from grandchild ' + this.i : 'hello there'
+      }
+    },
+    props: ['i'],
+    template: '#grandchild-template',
+    methods: {
+      dispatch: function() {
+        this.$dispatch('child-msg', this.msg)
+      },
+      emit: function() {
+        this.$root.$emit('direct-msg', this.msg)
+      }
+    },
+    events: {
+      'parent-msg': function(msg) {
+        this.parentMsg = msg
+      }
+    }
+  })
+
+  Vue.component('child', {
+    template: '#child-template',
+    data: function() {
+      return {
+        msg: '',
+        propgation: false
+      }
+    },
+    methods: {
+      emit: function() {
+        this.$emit('child-msg', 'Something happen to me.')
+      }
+    },
+    events: {
+      'parent-msg': function(msg) {
+        this.msg = msg
+        return this.propgation
+      },
+      'child-msg': function(msg) {
+        this.msg = msg
+        return this.propgation
+      },
+      'direct-msg': function(msg) {
+        this.msg = msg
+      }
+
+    }
+  })
+
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      msg: 'Hi',
+      msgToTheChild: ''
+    },
+    methods: {
+      broadcast: function() {
+        this.$broadcast('parent-msg', this.msg)
+      },
+      handleChildMsg: function(msg) {
+        this.msgToTheChild = msg
+      }
+    },
+    events: {
+      'child-msg': function(msg) {
+        this.msg = msg
+      },
+      'direct-msg': function(msg) {
+        this.msg = msg
+      }
+    }
+  })
+
+  vm.$children[0].$on('child-msg', function (msg) {
+    console.log(msg)
+  })
+  </script>
+</body>
+
+</html>

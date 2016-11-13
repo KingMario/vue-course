@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>事件绑定与处理</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/animate.min.css">
+</head>
+<body>
+<div>
+</div>
+  <div class="container">
+    <h2>内联语句事件绑定</h2>
+    <div class="row">
+      <button class="btn btn-primary" @click="thumbsUp++">
+        赞！
+      </button>
+      <span :class="thumbsUp ? 'text-success' : 'text-danger'">
+        <span class="glyphicon shake infinite" :class="thumbsUp ? 'glyphicon-thumbs-up' : ['animated ', 'glyphicon-circle-arrow-left']"></span> {{thumbsUp}}
+      </span>
+    </div>
+  </div>
+<script src="../js/vue.js"></script>
+<script>
+  var vm = new Vue({
+    el: 'body',
+    data: {
+      thumbsUp: 0
+    }
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>事件绑定与处理  </title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body @keydown.f1="showHelp = true">
+<div>
+  <div class="container">
+    <h2>按键修饰符</h2>
+    <div class="row">
+      <div class="col-md-12" @click="msg = ''">
+        {{ msg }}
+      </div>
+      <form class="form">
+        <input type="text" class="form-control" placeholder="press enter does nothing" @keydown.enter.prevent>
+        <input type="text" class="form-control" placeholder="press a, b, c, d, e or enter to submit" @keydown.hotkeys.prevent="submitForm" @keydown.f1.stop>
+        <button type="submit" class="form-control" @click.prevent="submitForm">Submit</button>
+      </form>
+    </div>
+    <div class="row" v-show="showHelp" @click="showHelp = false">
+      <div class="col-md-12 text-center">
+        <h2>Help Desk</h2>
+      </div>
+      <div class="col-md-offset-1 col-md-10">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget odio vulputate, rhoncus metus a, condimentum tellus. Nullam commodo tempor dui, et sodales orci feugiat et. Nunc metus ligula, vulputate ac volutpat sed, vestibulum a massa. Sed lacinia efficitur tellus, a ultricies libero. Phasellus felis felis, convallis id elit eu, elementum lobortis erat. Nulla sollicitudin id erat eu varius. Aenean volutpat, lorem ut scelerisque interdum, felis mauris suscipit lacus, aliquam mollis augue diam eu nisl. Ut ut aliquam lectus. Sed consectetur rutrum lorem, id tempor mi lobortis placerat. Sed ut posuere nisl. Mauris tincidunt consectetur placerat. Aliquam ut lacus auctor, congue nibh non, tempus lacus. Vestibulum at velit viverra felis tempus viverra. Nullam a libero velit. Etiam feugiat nec tortor nec feugiat.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+  Vue.directive('on').keyCodes.f1 = 112
+  Vue.directive('on').keyCodes.hotkeys = [65, 66, 67, 68, 69]
+
+  var vm = new Vue({
+    el: 'body',
+    data: {
+      msg: '',
+      showHelp: false
+    },
+    methods: {
+      submitForm: function (event) {
+        this.msg = 'sending request ...'
+      }
+    },
+    watch: {
+      msg: function (val) {
+        if (val) {
+          var self = this
+          setTimeout(function () {
+            self.msg = self.msg !== 'done!' ? 'done!' : ''
+          }, 1000)
+        }
+      },
+      showHelp: function (val) {
+        if (val) {
+          var self = this
+          setTimeout(function () {
+            self.showHelp = false
+          }, 1000)
+        }
+      }
+    }
+  })
+</script>
+</body>
+</html>

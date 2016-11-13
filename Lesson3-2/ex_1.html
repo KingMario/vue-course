@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>组件实战 - 模板与样式</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/lesson3-2.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <h2>单程直达机票航班信息展示</h2>
+      <div class="col-md-7"></div>
+      <div class="col-md-5">
+        <direct-flight></direct-flight>
+      </div>
+    </div>
+  </div>
+  <template id="flight-code-title-template">
+    <img :src="'../images/flight-companies/' + flightCompanyCode + '.png'" class="flight-image">{{ flightCompanyName }} {{ flightCode }}
+  </template>
+  <template id="direct-flight-template">
+    <div class="text-center flight-info">
+      <div class="supplier" @mouseover="showSupplier=true" @mouseout="showSupplier=false" v-if="supplier">
+        <span class="glyphicon glyphicon-certificate glyphicon-supplier"></span>
+        <span class="supplier-text"></span>
+        <div class="hover-box" v-show="showSupplier">
+          <strong>产品供应商：</strong>
+          <br> 上海华程西南旅行社有限公司
+          <br> 08309722
+        </div>
+      </div>
+      <h3>
+        10-13 周四 上海 <span class="glyphicon glyphicon-arrow-right"></span> 武汉
+      </h3>
+      <div class="flight-title flight-title-single" v-if="!sharedFlightCode">
+        <flight-code-title flight-code="MU9345"></flight-code-title>
+        波音737-800 {{ subclasses['Y'] }}
+      </div>
+      <div class="flight-title-group" v-else>
+        <div class="flight-title">
+          <flight-code-title flight-code="MU9345"></flight-code-title>
+          波音737-800 {{ subclasses['Y'] }}
+        </div>
+        <div class="flight-title shared-flight-title">
+          实际乘坐 <flight-code-title flight-code="FM9345"></flight-code-title>
+        </div>
+      </div>
+      <div class="row flight-detail">
+        <div class="col-xs-4 text-right flight-depart">
+          <div class="flight-time">22:30</div>
+          <div class="flight-airport">浦东国际机场T2</div>
+        </div>
+        <div class="col-xs-4 flight-arrow">
+          <div class="cost-time">
+            <span class="glyphicon glyphicon-time"></span> 2h05m
+          </div>
+          <div class="timeline">
+            <span class="glyphicon glyphicon-plane"></span>
+          </div>
+        </div>
+        <div class="col-xs-4 text-left flight-arrive">
+          <div class="flight-time" v-if="!overMidNight">00:35</div>
+          <div class="flight-time-with-overmidnight" v-else>
+            <div class="flight-time">00:35</div>
+            <div class="flight-time-overmidnight" @mouseover="showOverMidNightDetail=true" @mouseout="showOverMidNightDetail=false">
+              <small class="overmidnight-text abbr"></small>
+              <div class="hover-box" v-show="showOverMidNightDetail">
+                到达时间为第2天，2016年10月14日 00时35分
+              </div>
+            </div>
+          </div>
+          <div class="flight-airport">天河国际机场T2</div>
+        </div>
+      </div>
+    </div>
+  </template>
+  <script src="../js/vue.js"></script>
+  <script>
+  var flightCompanies = {
+    '3u': '四川航空',
+    '9c': '春秋航空',
+    'bk': '奥凯航空',
+    'ca': '中国国航',
+    'cz': '南方航空',
+    'fm': '上海航空',
+    'ho': '吉祥航空',
+    'hu': '海南航空',
+    'mu': '东方航空',
+    'zh': '深圳航空'
+  }
+  var subclasses = {
+    Y: '经济舱',
+    C: '商务舱',
+    F: '头等舱'
+  }
+
+  var flightCodeTitle = Vue.extend({
+    template: '#flight-code-title-template',
+    props: {
+      flightCode: {
+        required: true,
+        type: String,
+        validator: function(val) {
+          return /^[0-9A-Z]{2}\d+$/.test(val)
+        },
+        coerce: function(val) {
+          return val.toUpperCase()
+        }
+      }
+    },
+    computed: {
+      flightCompanyCode: function() {
+        return this.flightCode.substr(0, 2).toLowerCase()
+      },
+      flightCompanyName: function() {
+        return flightCompanies[this.flightCompanyCode]
+      }
+    }
+  })
+
+  var directFlight = Vue.extend({
+    template: '#direct-flight-template',
+    data: function() {
+      return {
+        sharedFlightCode: 'FM9345',
+        subclasses: subclasses,
+        supplier: true,
+        overMidNight: true,
+        showSupplier: false,
+        showOverMidNightDetail: false
+      }
+    },
+    components: {
+      flightCodeTitle: flightCodeTitle
+    }
+  })
+
+  var vm = new Vue({
+    el: 'body',
+    components: {
+      directFlight: directFlight
+    }
+  })
+  </script>
+</body>
+
+</html>
