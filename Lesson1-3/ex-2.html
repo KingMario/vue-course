@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>条件渲染</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/lesson1-3.css">
+</head>
+<body>
+<div class="container">
+  <h2>条件渲染</h2>
+  <div id="app">
+    <div>
+      <div class="item" @click="subitemsExpanded = !subitemsExpanded">
+        成人票套餐
+        <span class="glyphicon glyphicon-chevron-up" v-show="subitemsExpanded"></span>
+        <span class="glyphicon glyphicon-chevron-down" v-else></span>
+      </div>
+      <div class="subitems" v-show="subitemsExpanded">
+        <div>成人票</div>
+        <div>门票抵用券</div>
+        <div>酒店抵用券</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      subitemsExpanded: true
+    }
+  })
+</script>
+</body>
+</html>

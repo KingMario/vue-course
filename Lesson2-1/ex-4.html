@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>
+    类与样式绑定
+  </title>
+  <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+  <h1>
+    样式绑定对象与数组语法
+  </h1>
+  <div class="row">
+    <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">
+      颜色：红，字体：30px
+    </div>
+    <hr>
+    <div :style="styleObject">
+      颜色一样红，字体也是30px
+    </div>
+    <hr>
+    <div :style="[styleObjectA, styleObjectB]">
+      颜色继续红，字体保持30px，并且增加了阴影
+    </div>
+  </div>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+  var vm = new Vue({
+    el: 'body',
+    data: {
+      activeColor: 'red',
+      fontSize: 30,
+      styleObject: {
+        color: 'red',
+        'font-size': '30px'
+      },
+      styleObjectA: {
+        color: 'red'
+      },
+      styleObjectB: {
+        fontSize: '30px',
+        boxShadow: '10px 10px 5px #888888'
+      }
+    }
+  })
+</script>
+</body>
+</html>

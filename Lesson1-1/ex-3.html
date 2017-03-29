@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>复杂的数据驱动</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/lesson1-1.css">
+</head>
+<body>
+<div class="container">
+  <h2>Vue.js 开发示例</h2>
+  <span>您选择的是{{selected.name}}，今年{{selected.age}}岁，{{selected.gender}}，在{{selected.department}}工作。</span>
+  <div>
+    <span>请选择：</span>
+    <div class="form-select" @mouseover="showListDiv=true" @mouseout="showListDiv=false">
+      <span class="form-select-text">{{selected.name}}<span
+        :class="['glyphicon', {'glyphicon-chevron-down': !showListDiv, 'glyphicon-chevron-up': showListDiv}]"
+        aria-hidden="true"></span></span>
+      <div class="form-select-list" v-show="showListDiv">
+        <ul>
+          <li v-for="option in options" @click="selectOption(option)" :title="option | personInfo">{{option.name}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+  var options = [
+    {
+      id: 1,
+      name: '张三',
+      age: 27,
+      gender: '男',
+      department: '开发部'
+    }, {
+      id: 2,
+      name: '李四',
+      age: 23,
+      gender: '女',
+      department: '测试部'
+    }, {
+      id: 3,
+      name: '李四',
+      age: 29,
+      gender: '男',
+      department: '设计部'
+    }, {
+      id: 4,
+      name: '王五',
+      age: 32,
+      gender: '女',
+      department: '产品部'
+    }
+  ]
+
+  Vue.filter('personInfo', function (person) {
+    return [person.name, person.gender, person.age + '岁', person.department].join('，')
+  })
+
+  var vm = new Vue({
+    el: '.container',
+    data: {
+      options: options,
+      selected: options[0],
+      showListDiv: false
+    },
+    methods: {
+      selectOption: function (opt) {
+        this.selected = opt
+        this.showListDiv = false
+      }
+    }
+  })
+</script>
+</body>
+</html>

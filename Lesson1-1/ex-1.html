@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>视图驱动</title>
+  <link rel="stylesheet" href="../css/lesson1-1.css">
+</head>
+<body>
+<div>
+  <span>请选择：</span>
+  <div id="mySelector" class="form-select">
+    <span class="form-select-text"></span>
+    <div class="form-select-list">
+      <ul>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script src="../js/jquery.js"></script>
+<script>
+  $(function () {
+    var options = ('选项一,选项二,选项三,选项四,选项五').split(',')
+
+    var $mySelector = $('#mySelector')
+    var $mySelectorText = $mySelector.find('.form-select-text')
+    var $mySelectorListDiv = $mySelector.find('.form-select-list')
+    var $mySelectorList = $mySelector.find('.form-select-list ul')
+
+    $mySelectorText.html(options[0])
+    $mySelectorListDiv.hide()
+    $.each(options, function (idx, option) {
+      $mySelectorList.append($('<li>' + option + '</li>'))
+    })
+
+    $mySelectorList.on('click', 'li', function (e) {
+      $mySelectorText.html(options[$(this).index()])
+      $mySelectorListDiv.hide()
+    })
+
+    $('.form-select').on('mouseover', function (e) {
+      $(this).find('.form-select-list').show()
+    }).on('mouseout', function (e) {
+      $(this).find('.form-select-list').hide()
+    })
+  })
+</script>
+</body>
+</html>

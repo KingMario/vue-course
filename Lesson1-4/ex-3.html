@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>过滤与排序</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <input v-model="name">
+  <ul>
+    <li v-for="pax in ffp | filterBy name in 'name' | orderBy 'name'" track-by="$index">
+      {{ pax.name }}
+    </li>
+  </ul>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+  var vm = new Vue({
+    el: 'body',
+    data: {
+      name: '',
+      ffp: [
+        {
+          name: 'Micheal',
+          age: 24
+        }, {
+          name: 'Jack',
+          age: 17
+        }, {
+          name: 'Tiffany',
+          age: 23
+        }, {
+          name: 'Alice',
+          age: 9
+        }, {
+          name: 'Dannis',
+          age: 42
+        }, {
+          name: 'Greg',
+          age: 36
+        }, {
+          name: 'Pearl',
+          age: 3
+        }, {
+          name: 'David',
+          age: 5
+        }, {
+          name: 'Bob',
+          age: 4
+        }, {
+          name: 'Johnson',
+          age: 1
+        }
+      ]
+    }
+  })
+</script>
+</body>
+</html>

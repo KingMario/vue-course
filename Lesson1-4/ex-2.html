@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>对象属性遍历</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h2>对象属性遍历</h2>
+  <ul>
+    <li v-for="(key, val) in paxInfo">{{keyTitles[$key]}}: {{val}}</li>
+  </ul>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+  var vm = new Vue({
+    el: 'body',
+    data: {
+      keyTitles: {
+        name: '姓名',
+        idType: '证件类型',
+        idNumber: '证件号码',
+        mobile: '手机号码'
+      },
+      paxInfo: {
+        name: '张萌萌',
+        idType: '身份证',
+        idNumber: '310104198508101022',
+        mobile: '18988886666'
+      }
+    }
+  })
+</script>
+</body>
+</html>

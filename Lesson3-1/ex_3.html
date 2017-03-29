@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>组件</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container" id="app">
+    <h2>通过 props 传递数据到子组件</h2>
+    <div class="row">We have an msg: {{parentMsg}}. </div>
+    <div class="row">
+      Edit msg:
+      <input type="text" v-model="parentMsg">
+    </div>
+    <div class="row">
+      And the array in parent component is: {{arrData | json}}
+    </div>
+    <my-component :msg="parentMsg" :prop-a="arrData" prop-b="12" :numbers='[1,2,3]' :number="13"></my-component>
+    <my-component name="Another Component" :msg.sync="parentMsg" :prop-a="arrData" :prop-b="12" :my-number="myNumber"></my-component>
+    <my-component name="Yet Another Component" :msg.once="parentMsg" :prop-a="arrData"></my-component>
+  </div>
+
+  <template id="tpl">
+    <div style="border: 1px solid black; padding: 5px; display: inline-block;">
+      <h3>{{name}}</h3>
+      <div>
+        Msg:
+        <input type="text" v-model="msg" />
+      </div>
+      <div>The array in child component is: {{propA | json}}.</div>
+      <div>The type of propB is : {{typeof propB}}</div>
+      <button @click="changeElements">Click Me First</button>
+      <button @click="sortElements">Then Click Me</button>
+      <div v-if="number">The number is: {{number}}</div>
+      <div v-else>The number is absent</div>
+      <div>Other numbers: {{numbers | json}}</div>
+      <div v-if="myNumber">Number object: {{myNumber | json}}</div>
+      <div v-else>That's all.</div>
+    </div>
+  </template>
+  <script src="../js/vue.js"></script>
+  <script>
+  function number() {
+    this.name = 'number'
+    this.value = 3
+  }
+
+  var myComponent = Vue.extend({
+    props: {
+      name: {
+        type: String,
+        default: 'Component'
+      },
+      msg: String,
+      propA: {
+        type: Array,
+        required: true
+      },
+      propB: [String, Number],
+      numbers: {
+        type: Array,
+        default: function() {
+          return [1, 1, 2, 3, 5, 8, 13, 21]
+        }
+      },
+      number: {
+        type: Number,
+        // twoWay: true,
+        validator: function(value) {
+          return value > 10
+        // },
+        // coerce: function(value) {
+        //   return Number(value)
+        }
+      },
+      myNumber: number
+    },
+    methods: {
+      changeElements() {
+        this.propA.push(Math.floor(Math.random() * 100))
+      },
+      sortElements() {
+        this.propA = this.propA.sort((a, b) => a - b)
+      }
+    },
+    template: '#tpl'
+  })
+
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      arrData: [4, 27, 3, 12, 5, 9],
+      parentMsg: 'Hello, Vue.js!',
+      myNumber: new number()
+    },
+    components: {
+      myComponent: myComponent
+    }
+  })
+  </script>
+</body>
+
+</html>

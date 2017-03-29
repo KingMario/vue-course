@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>组件</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container" id="app">
+    <h2>内容分发</h2>
+    <div class="row">
+      <h3>Parent</h3>
+      <div>
+        <child>
+          <div class="col-sm-3 text-right text-info bg-info">内容一（匿名）</div>
+          <div class="col-sm-4 text-danger bg-danger" slot="name1">内容二 {{msg}}（具名一）</div>
+          <div class="col-sm-2 text-success bg-success" slot="name2">内容三（具名二）</div>
+          <div class="col-sm-6 text-right text-warning bg-warning" slot="name1">内容四 {{msg}}（具名一）</div>
+          <div class="col-sm-3 text-primary bg-primary">内容五（匿名）</div>
+          <div class="col-sm-2 text-success bg-success" slot="name2">内容六（具名二）</div>
+        </child>
+      </div>
+    </div>
+  </div>
+
+  <template id="child-template">
+    <div>
+      <h3>Child</h3>
+      <div class="col-sm-2 text-muted">
+        Child's own contents
+      </div>
+      <slot name="name1"></slot>
+      <slot></slot>
+      <slot name="name2"></slot>
+      <div class="col-sm-2 text-muted">
+        Child's own contents
+      </div>
+    </div>
+  </template>
+
+  <script src="../js/vue.js"></script>
+  <script>
+  Vue.component('child', {
+    template: '#child-template'
+  })
+
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      msg: 'Hello, Vue.js'
+    }
+  })
+  </script>
+</body>
+
+</html>

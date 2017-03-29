@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>事件绑定与处理</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+<div>
+</div>
+<div class="container">
+  <h2>Vue 实例方法声明 与 DOM事件绑定</h2>
+  <div class="row">
+    <div class="col-md-3" @click="doSomething">
+      <button>Call nomal method</button>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3" @click="doTheSameThing">
+      <button>Call abnomal method</button>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3" @click="doAnotherThing">
+      <button>Call abnomal absent method</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 bg-info text-info">
+      The method is declared in methods attribute of Vue instance options object.
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3 bg-info text-info">
+      The method is declared in data attribute of Vue instance options object.
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3 bg-info text-info">
+      The method is to be declared by calling $set.
+    </div>
+  </div>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+  function doSomething (event) {
+    console.log(this)
+    event && console.log(event)
+  }
+
+  function doTheSameThing (event) {
+    console.log(this)
+    event && console.log(event)
+  }
+
+  function doAnotherThing (event) {
+    event && console.log(event)
+    console.log(this)
+  }
+
+  var vm = new Vue({
+    el: 'body',
+    methods: {
+      doSomething: doSomething
+    },
+    data: {
+      doTheSameThing: doTheSameThing // are we really doing the same thing?
+    }
+  })
+</script>
+</body>
+</html>
